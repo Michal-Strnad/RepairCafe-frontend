@@ -4,22 +4,28 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('repairCafeSession') || 'null'); }
-    catch { return null; }
+    try {
+      return JSON.parse(localStorage.getItem('repairCafeSession') || 'null');
+    } catch {
+      return null;
+    }
   });
 
-  const value = useMemo(() => ({
-    session,
-    signIn: (data) => {
-      const next = { token: data.token, user: data.user };
-      localStorage.setItem('repairCafeSession', JSON.stringify(next));
-      setSession(next);
-    },
-    signOut: () => {
-      localStorage.removeItem('repairCafeSession');
-      setSession(null);
-    },
-  }), [session]);
+  const value = useMemo(
+    () => ({
+      session,
+      signIn: (data) => {
+        const next = { token: data.token, user: data.user };
+        localStorage.setItem('repairCafeSession', JSON.stringify(next));
+        setSession(next);
+      },
+      signOut: () => {
+        localStorage.removeItem('repairCafeSession');
+        setSession(null);
+      },
+    }),
+    [session],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

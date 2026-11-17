@@ -1,31 +1,33 @@
-# Repair Café – krok 02: Vytvoření požadavku na opravu
+# Repair Café – frontend
 
-Tento balíček obsahuje celý frontendový projekt po kroku 02. Navazuje na krok 01 a přidává formulář pro zadání nové opravy.
+## Krok 03: Přehled požadavků a detail požadavku
 
-## Nové funkce
-- veřejná stránka formuláře na `/requests/new`
-- název požadavku, kategorie a popis problému
-- volitelná fotografie (výběr souboru v prohlížeči)
-- kontaktní e-mail a volitelný telefon
-- základní HTML validace povinných polí
-- potvrzovací obrazovka po odeslání formuláře
-- odkazy na formulář z úvodní stránky
+Tento balíček navazuje na krok 02 a obsahuje celý aktuální frontend.
 
-## Spuštění
+### Nové funkce
+- veřejný přehled dostupných požadavků (`/requests`)
+- vyhledávání podle názvu, popisu a kategorie
+- filtrování podle kategorie a řazení
+- detail požadavku (`/requests/:id`)
+- formulář pro vyjádření zájmu dobrovolníka s volitelnou zprávou
+- upozornění, že kontaktní údaje zůstávají skryté
 
+### Spuštění
 ```bash
 npm install
 npm run dev
 ```
 
-## Důležité omezení
-Formulář je zatím pouze frontendový prototyp. Data se neposílají na server ani neukládají do databáze. V aktuálním backendu není endpoint pro vytvoření požadavku na opravu. Po doplnění API se formulář napojí na skutečné ukládání.
+### Testovací adresy
+- `/` – úvodní stránka
+- `/requests` – přehled požadavků
+- `/requests/1` – detail ukázkového požadavku
+- `/requests/new` – vytvoření požadavku
 
-## Doporučený Git commit
+### Důležité omezení
+Požadavky jsou zatím ukázková data v `src/data/requests.js`. Vyjádření zájmu se pouze potvrdí v prohlížeči; nic se neukládá do databáze ani neposílá na backend. Současný backend zatím neobsahuje potřebné endpointy pro požadavky a zájem dobrovolníků.
 
+### Doporučený Git commit
 ```text
-feat: add repair request creation form
+feat: add repair request listing and detail pages
 ```
-
-## Přechod z kroku 01
-Tento ZIP obsahuje kompletní stav projektu po kroku 02. Pro pokračování nahraďte obsah pracovní složky obsahem tohoto ZIPu; nepřepisujte `.git` složku, pokud už máte projekt inicializovaný jako Git repozitář.

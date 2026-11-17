@@ -1,6 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import LandingPage from '../pages/LandingPage.jsx';
 import CreateRequestPage from '../pages/CreateRequestPage.jsx';
+import RequestsPage from '../pages/RequestsPage.jsx';
+import RequestDetailPage from '../pages/RequestDetailPage.jsx';
 
 function LoginPlaceholder() {
   return (
@@ -18,6 +20,8 @@ export default function App() {
     <Routes>
       <Route path="/" element={<LandingPage />} />
       <Route path="/requests/new" element={<CreateRequestPage />} />
+      <Route path="/requests" element={<RequestsPage />} />
+      <Route path="/requests/:id" element={<RequestDetailPage />} />
       <Route path="/login" element={<LoginPlaceholder />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import LandingPage from '../pages/LandingPage.jsx';
+import CreateRequestPage from '../pages/CreateRequestPage.jsx';
 
 function LoginPlaceholder() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
+      <Route path="/requests/new" element={<CreateRequestPage />} />
       <Route path="/login" element={<LoginPlaceholder />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

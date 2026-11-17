@@ -1,15 +1,15 @@
-# Repair Café – krok 01: Základ projektu a veřejná úvodní stránka
+# Repair Café – krok 02: Vytvoření požadavku na opravu
 
-Tento balíček představuje první samostatný krok frontendové části projektu.
+Tento balíček obsahuje celý frontendový projekt po kroku 02. Navazuje na krok 01 a přidává formulář pro zadání nové opravy.
 
-## Obsah
-- React + Vite základ projektu
-- React Router
-- veřejná úvodní stránka
-- sekce O nás a Jak to funguje
-- základní vizuální styl a obrázkové podklady
-
-Přihlášení je zatím pouze informační placeholder. V této fázi není napojen backend ani databáze.
+## Nové funkce
+- veřejná stránka formuláře na `/requests/new`
+- název požadavku, kategorie a popis problému
+- volitelná fotografie (výběr souboru v prohlížeči)
+- kontaktní e-mail a volitelný telefon
+- základní HTML validace povinných polí
+- potvrzovací obrazovka po odeslání formuláře
+- odkazy na formulář z úvodní stránky
 
 ## Spuštění
 
@@ -18,12 +18,14 @@ npm install
 npm run dev
 ```
 
+## Důležité omezení
+Formulář je zatím pouze frontendový prototyp. Data se neposílají na server ani neukládají do databáze. V aktuálním backendu není endpoint pro vytvoření požadavku na opravu. Po doplnění API se formulář napojí na skutečné ukládání.
+
 ## Doporučený Git commit
 
 ```text
-feat: add React project foundation and public landing page
+feat: add repair request creation form
 ```
 
-## Další krok
-
-Krok 02 rozšíří projekt o formulář pro vytvoření požadavku na opravu. Tento ZIP obsahuje celý stav projektu po kroku 01; při pokračování nahraďte soubory projektu obsahem dalšího ZIPu.
+## Přechod z kroku 01
+Tento ZIP obsahuje kompletní stav projektu po kroku 02. Pro pokračování nahraďte obsah pracovní složky obsahem tohoto ZIPu; nepřepisujte `.git` složku, pokud už máte projekt inicializovaný jako Git repozitář.

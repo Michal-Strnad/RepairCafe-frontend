@@ -3,17 +3,7 @@ import LandingPage from '../pages/LandingPage.jsx';
 import CreateRequestPage from '../pages/CreateRequestPage.jsx';
 import RequestsPage from '../pages/RequestsPage.jsx';
 import RequestDetailPage from '../pages/RequestDetailPage.jsx';
-
-function LoginPlaceholder() {
-  return (
-    <main className="intro" style={{ minHeight: '60vh' }}>
-      <span className="eyebrow">PŘIPRAVUJEME</span>
-      <h2>Přihlášení bude doplněno v další části projektu.</h2>
-      <p>V této fázi je dostupná veřejná úvodní stránka Repair Café.</p>
-      <a className="button button-primary" href="/">Zpět na úvodní stránku</a>
-    </main>
-  );
-}
+import LoginPage from '../pages/LoginPage.jsx';
 
 export default function App() {
   return (
@@ -22,7 +12,7 @@ export default function App() {
       <Route path="/requests/new" element={<CreateRequestPage />} />
       <Route path="/requests" element={<RequestsPage />} />
       <Route path="/requests/:id" element={<RequestDetailPage />} />
-      <Route path="/login" element={<LoginPlaceholder />} />
+      <Route path="/login" element={<LoginPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

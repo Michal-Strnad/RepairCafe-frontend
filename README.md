@@ -51,3 +51,16 @@ npm run format:check
 ```
 
 Nastavení formátování je v `.prettierrc.json`; složky `node_modules` a `dist` se ignorují.
+
+## S06 – Odeslání zájmu dobrovolníka o opravu (frontend)
+
+Detail požadavku nyní vyžaduje přihlášení před odesláním zájmu. Přihlášený uživatel může otevřít formulář, napsat nepovinnou zprávu do 500 znaků, odeslání potvrdit nebo zrušit. Během odesílání je tlačítko deaktivované. Po úspěchu se zobrazí potvrzení „Zájem o opravu odeslán“ a informace o čekání na rozhodnutí zadavatele.
+
+Frontend volá:
+
+- `POST /requests/:id/interests`
+- hlavičky: `Content-Type: application/json`, `Authorization: Bearer <JWT>`
+- tělo: `{ "message": "..." }` (prázdný řetězec je povolen)
+- očekávané úspěšné HTTP 2xx; `409 Conflict` se interpretuje jako již existující zájem; `401/403` zobrazí odpovídající chybu.
+
+**Důležité napojení na backend:** V dodaném frontendovém repozitáři není implementace tohoto API endpointu ani API kontrakt. Backend musí endpoint doplnit a ověřit, že přihlášený uživatel má roli `VOLUNTEER`, požadavek je otevřený a daný dobrovolník již zájem neposlal. Ochrana proti duplicitě musí být vynucena také na serveru; samotný frontend ji nemůže garantovat po obnovení stránky.

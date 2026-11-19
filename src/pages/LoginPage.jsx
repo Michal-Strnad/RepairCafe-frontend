@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { ArrowLeft, Coffee, ShieldCheck } from 'lucide-react';
 import { useAuth } from '../auth/AuthContext.jsx';
@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [busy, setBusy] = useState(false);
   const { signIn, session } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   async function handleGoogleSuccess(response) {
     if (!response.credential) {
@@ -30,7 +31,7 @@ export default function LoginPage() {
         throw new Error(data.message || 'Přihlášení se nepodařilo.');
       }
       signIn(data);
-      navigate('/', { replace: true });
+      navigate(location.state?.from || '/', { replace: true });
     } catch (err) {
       setError(err.message || 'Nepodařilo se spojit se serverem.');
     } finally {

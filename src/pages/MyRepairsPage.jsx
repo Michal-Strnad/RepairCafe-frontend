@@ -91,6 +91,8 @@ export default function MyRepairsPage() {
           <p>Na jednom místě najdete opravy, které jste přijali, i ty, které už máte za sebou.</p>
         </div>
 
+        <div className="my-repairs-calendar-link"><Link className="button button-secondary" to="/my-repairs/calendar"><CalendarDays size={17} /> Otevřít kalendář oprav</Link></div>
+
         <div className="my-repairs-stats">
           <div><CalendarDays /><strong>{planned.length}</strong><span>naplánované opravy</span></div>
           <div><CheckCircle2 /><strong>{completed.length}</strong><span>dokončené opravy</span></div>

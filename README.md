@@ -79,18 +79,15 @@ Backend musí u tohoto endpointu ověřit, že přihlášený uživatel je zadav
 
 Poznámka: endpoint je integrační kontrakt pro backend. V dodaném frontendovém archivu nebyla implementace tohoto GET endpointu doložena, proto je nutné ověřit jeho existenci nebo jej doplnit na backendu.
 
-## S10 – Výběr dobrovolníka pro požadavek
 
-Na stránce přehledu zájemců (`/requests/:id/interests`) je u každého čekajícího dobrovolníka akce **Vybrat dobrovolníka**. Před odesláním se zobrazí potvrzovací dialog se jménem vybraného člověka a názvem požadavku. Po úspěšném uložení se zobrazí stav „Dobrovolník byl vybrán“ a další zájemce již nelze vybrat.
+## S11 – Přehled oprav dobrovolníka
 
-Frontend volá integrační endpoint:
+Doplněna stránka `/my-repairs` dostupná z přímého odkazu. Zobrazuje dvě oddělené skupiny: naplánované a dokončené opravy. Karty obsahují název, kategorii, zadavatele, datum/termín a odkaz na detail. Jsou doplněny počty obou skupin, prázdné stavy, načítání a chybové stavy.
 
-- `POST /requests/:id/select-volunteer`
-- hlavičky: `Content-Type: application/json`, `Authorization: Bearer <JWT>`
-- tělo: `{ "interestId": "<id zájmu>" }`
-- očekávaná odpověď může obsahovat `{ "selectedVolunteer": { ... } }` nebo `{ "volunteer": { ... } }`; po úspěchu se jako vybraný zobrazí také zvolený záznam zájemce.
-- `401`: přihlášení vypršelo; `403`: uživatel není zadavatelem; `404`: zájem/požadavek nebyl nalezen; `409`: dobrovolník již byl vybrán nebo stav požadavku neumožňuje změnu.
+### Backendový kontrakt
 
-**Backend je nutné doplnit/ověřit:** endpoint musí ověřit JWT, vlastnictví požadavku přihlášeným zákazníkem, že vybraný `interestId` patří k danému požadavku a že požadavek ještě nemá vybraného dobrovolníka. Výběr musí být atomický (např. transakce nebo podmíněný update), aby dva souběžné požadavky nemohly vybrat různé dobrovolníky. Po obnovení stránky má `GET /requests/:id/interests` vracet také `selectedVolunteer` nebo odpovídající informaci o již provedeném výběru.
+Frontend očekává `GET /volunteer/repairs` s hlavičkou `Authorization: Bearer <JWT>`. Odpověď může být pole položek nebo objekt `{ "repairs": [...] }`. Každá položka má obsahovat identifikátor opravy (`id`, `_id` nebo `requestId`), název (`title` nebo `request.title`), kategorii, zadavatele a datum (`scheduledAt`, `scheduledDate`, `repairDate`, `date` nebo `appointment.start`). Stav se vyhodnocuje z `status`/`state`; dokončené hodnoty jsou `completed`, `done`, `closed`, `finished`, `uzavreno`, `dokončeno` nebo `dokonceno`, ostatní se zobrazí jako naplánované.
 
-Doporučený commit: `feat: allow customer to select repair volunteer`
+Backend musí ověřit roli dobrovolníka a vracet pouze opravy přiřazené přihlášenému uživateli. Frontendové skrytí stránky není bezpečnostní kontrola. Endpoint je integrační kontrakt; jeho implementace v backendu nebyla součástí tohoto FE balíčku.
+
+Doporučený commit: `feat: add volunteer repairs overview`

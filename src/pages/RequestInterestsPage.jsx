@@ -9,6 +9,8 @@ import {
   CheckCircle2,
   AlertCircle,
   Users,
+  Check,
+  X,
 } from 'lucide-react';
 import { sampleRequests } from '../data/requests.js';
 import { useAuth } from '../auth/AuthContext.jsx';
@@ -35,6 +37,10 @@ export default function RequestInterestsPage() {
   const [interests, setInterests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [selectionTarget, setSelectionTarget] = useState(null);
+  const [selecting, setSelecting] = useState(false);
+  const [selectionError, setSelectionError] = useState('');
+  const [selectedVolunteer, setSelectedVolunteer] = useState(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -72,6 +78,10 @@ export default function RequestInterestsPage() {
         }
 
         const rows = Array.isArray(data) ? data : data.interests;
+        if (!Array.isArray(data)) {
+          const selected = data.selectedVolunteer || data.request?.selectedVolunteer || data.selectedInterest || null;
+          setSelectedVolunteer(selected);
+        }
         if (!Array.isArray(rows)) {
           throw new Error('Server vrátil neočekávaný formát seznamu zájemců.');
         }
@@ -88,6 +98,43 @@ export default function RequestInterestsPage() {
     loadInterests();
     return () => controller.abort();
   }, [id, session?.token]);
+
+  async function confirmVolunteerSelection() {
+    if (!selectionTarget || !session?.token) return;
+    const interestId = selectionTarget.id || selectionTarget._id || selectionTarget.interestId;
+    if (!interestId) {
+      setSelectionError('U zájemce chybí identifikátor. Výběr nelze bezpečně dokončit.');
+      return;
+    }
+
+    setSelecting(true);
+    setSelectionError('');
+    try {
+      const response = await fetch(`${API_URL}/requests/${encodeURIComponent(id)}/select-volunteer`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session.token}`,
+        },
+        body: JSON.stringify({ interestId }),
+      });
+      const data = await response.json().catch(() => ({}));
+      if (response.status === 401) throw new Error('Přihlášení vypršelo. Přihlaste se prosím znovu.');
+      if (response.status === 403) throw new Error('Dobrovolníka může vybrat pouze zadavatel požadavku.');
+      if (response.status === 409) throw new Error(data.message || 'K tomuto požadavku již byl dobrovolník vybrán.');
+      if (response.status === 404) throw new Error('Zájemce nebo požadavek již neexistuje. Obnovte prosím stránku.');
+      if (!response.ok) throw new Error(data.message || 'Dobrovolníka se nepodařilo vybrat.');
+
+      const chosen = data.selectedVolunteer || data.volunteer || selectionTarget;
+      setSelectedVolunteer(chosen);
+      setSelectionTarget(null);
+      setInterests((current) => current);
+    } catch (err) {
+      setSelectionError(err.message || 'Nepodařilo se spojit se serverem.');
+    } finally {
+      setSelecting(false);
+    }
+  }
 
   if (!request) {
     return (
@@ -121,6 +168,16 @@ export default function RequestInterestsPage() {
           <h1>Zájemci o opravu</h1>
           <p>Dobrovolníci, kteří nabídli pomoc s požadavkem „{request.title}“.</p>
         </div>
+
+        {selectedVolunteer && (
+          <section className="selected-volunteer-banner" role="status" aria-live="polite">
+            <span className="selected-volunteer-icon"><Check size={20} /></span>
+            <div>
+              <strong>Dobrovolník byl vybrán</strong>
+              <p>{getVolunteerName(selectedVolunteer)} bude s vámi domlouvat termín opravy. Kontaktní údaje a další postup se řídí stavem požadavku.</p>
+            </div>
+          </section>
+        )}
 
         <section className="interests-summary" aria-live="polite">
           <Users size={22} />
@@ -175,8 +232,19 @@ export default function RequestInterestsPage() {
                     </div>
                     <div className="interest-card-footer">
                       <span><Wrench size={15} /> Zájem o tento požadavek</span>
-                      <span className="status status-open">Čeká na vaše rozhodnutí</span>
+                      {selectedVolunteer ? (
+                        <span className="status status-selected">{(selectedVolunteer.id || selectedVolunteer._id || selectedVolunteer.interestId) === (item.id || item._id || item.interestId) ? 'Vybraný dobrovolník' : 'Výběr dokončen'}</span>
+                      ) : (
+                        <span className="status status-open">Čeká na vaše rozhodnutí</span>
+                      )}
                     </div>
+                    {!selectedVolunteer && (
+                      <div className="interest-select-row">
+                        <button className="button button-primary" type="button" onClick={() => { setSelectionTarget(item); setSelectionError(''); }}>
+                          <Check size={16} /> Vybrat dobrovolníka
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </article>
               );
@@ -184,9 +252,22 @@ export default function RequestInterestsPage() {
           </div>
         )}
 
-        <div className="implementation-note">
-          Výběr dobrovolníka bude navazovat v dalším kroku (S10). Zobrazení seznamu respektuje oprávnění ověřovaná backendem.
-        </div>
+        {selectionTarget && (
+          <div className="selection-dialog-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget && !selecting) setSelectionTarget(null); }}>
+            <section className="selection-dialog" role="dialog" aria-modal="true" aria-labelledby="selection-dialog-title">
+              <button className="selection-dialog-close" type="button" aria-label="Zavřít" onClick={() => setSelectionTarget(null)} disabled={selecting}><X size={19} /></button>
+              <span className="eyebrow">POTVRZENÍ VÝBĚRU</span>
+              <h2 id="selection-dialog-title">Vybrat dobrovolníka?</h2>
+              <p>Opravdu chcete pro požadavek „{request.title}“ vybrat dobrovolníka <strong>{getVolunteerName(selectionTarget)}</strong>?</p>
+              <p className="selection-dialog-hint">Po potvrzení bude výběr uložen a budete moci domluvit termín opravy.</p>
+              {selectionError && <div className="interest-error" role="alert"><AlertCircle size={18} /><span>{selectionError}</span></div>}
+              <div className="interest-actions">
+                <button className="button button-secondary" type="button" onClick={() => setSelectionTarget(null)} disabled={selecting}>Zrušit</button>
+                <button className="button button-primary" type="button" onClick={confirmVolunteerSelection} disabled={selecting}>{selecting ? 'Ukládám…' : 'Potvrdit výběr'}</button>
+              </div>
+            </section>
+          </div>
+        )}
       </main>
       <footer className="request-footer">Repair Café · Komunitní opravy</footer>
     </div>

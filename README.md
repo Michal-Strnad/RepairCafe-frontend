@@ -78,3 +78,19 @@ Byla doplněna stránka `/requests/:id/interests`, která načítá zájemce př
 Backend musí u tohoto endpointu ověřit, že přihlášený uživatel je zadavatelem požadavku. Frontend zpracovává odpovědi 401, 403 a 404; samotné oprávnění nikdy nepovažuje za zajištěné pouze skrytím odkazu.
 
 Poznámka: endpoint je integrační kontrakt pro backend. V dodaném frontendovém archivu nebyla implementace tohoto GET endpointu doložena, proto je nutné ověřit jeho existenci nebo jej doplnit na backendu.
+
+## S10 – Výběr dobrovolníka pro požadavek
+
+Na stránce přehledu zájemců (`/requests/:id/interests`) je u každého čekajícího dobrovolníka akce **Vybrat dobrovolníka**. Před odesláním se zobrazí potvrzovací dialog se jménem vybraného člověka a názvem požadavku. Po úspěšném uložení se zobrazí stav „Dobrovolník byl vybrán“ a další zájemce již nelze vybrat.
+
+Frontend volá integrační endpoint:
+
+- `POST /requests/:id/select-volunteer`
+- hlavičky: `Content-Type: application/json`, `Authorization: Bearer <JWT>`
+- tělo: `{ "interestId": "<id zájmu>" }`
+- očekávaná odpověď může obsahovat `{ "selectedVolunteer": { ... } }` nebo `{ "volunteer": { ... } }`; po úspěchu se jako vybraný zobrazí také zvolený záznam zájemce.
+- `401`: přihlášení vypršelo; `403`: uživatel není zadavatelem; `404`: zájem/požadavek nebyl nalezen; `409`: dobrovolník již byl vybrán nebo stav požadavku neumožňuje změnu.
+
+**Backend je nutné doplnit/ověřit:** endpoint musí ověřit JWT, vlastnictví požadavku přihlášeným zákazníkem, že vybraný `interestId` patří k danému požadavku a že požadavek ještě nemá vybraného dobrovolníka. Výběr musí být atomický (např. transakce nebo podmíněný update), aby dva souběžné požadavky nemohly vybrat různé dobrovolníky. Po obnovení stránky má `GET /requests/:id/interests` vracet také `selectedVolunteer` nebo odpovídající informaci o již provedeném výběru.
+
+Doporučený commit: `feat: allow customer to select repair volunteer`

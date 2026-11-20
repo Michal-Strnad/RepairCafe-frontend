@@ -1708,3 +1708,78 @@ select {
     flex-direction: column;
   }
 }
+
+/* S10 – výběr dobrovolníka */
+.selected-volunteer-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 17px 19px;
+  margin: 0 0 18px;
+  border: 1px solid #d6e3d0;
+  border-radius: 13px;
+  background: #f1f6ed;
+  color: #34513a;
+}
+.selected-volunteer-icon {
+  width: 34px;
+  height: 34px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #dfead8;
+}
+.selected-volunteer-banner strong { display: block; margin: 1px 0 4px; }
+.selected-volunteer-banner p { margin: 0; color: #687968; font-size: 13px; line-height: 1.5; }
+.status-selected {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 99px;
+  padding: 6px 10px;
+  background: #e7f0e2;
+  color: #456b3e;
+  font-size: 12px;
+  font-weight: 650;
+}
+.interest-select-row { display: flex; justify-content: flex-end; margin-top: 14px; }
+.selection-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: #17251dcc;
+}
+.selection-dialog {
+  position: relative;
+  width: min(100%, 480px);
+  padding: 30px;
+  border: 1px solid #e5e5dc;
+  border-radius: 18px;
+  background: #fffdfa;
+  box-shadow: 0 22px 70px #15251c38;
+}
+.selection-dialog h2 { margin: 10px 0 12px; color: #294a34; font-size: 25px; }
+.selection-dialog p { color: #68766b; font-size: 14px; line-height: 1.6; }
+.selection-dialog p strong { color: #263d2c; }
+.selection-dialog .selection-dialog-hint { padding: 12px 14px; border-radius: 10px; background: #f2f3ec; }
+.selection-dialog-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: #f0f1ea;
+  color: #526451;
+  cursor: pointer;
+}
+@media (max-width: 600px) {
+  .selection-dialog { padding: 25px 20px; }
+  .interest-select-row .button { width: 100%; }
+}

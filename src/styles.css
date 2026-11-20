@@ -1861,3 +1861,32 @@ select {
 .calendar-empty p { margin:8px 0 17px; }
 @media(max-width:850px) { .calendar-page { padding:28px 15px 48px; } .calendar-toolbar { grid-template-columns:1fr 1fr; } .calendar-toolbar h2 { grid-column:1/-1; grid-row:1; } .calendar-navigation { grid-row:2; } .calendar-modes { grid-row:2; } .calendar-cell { min-height:90px; padding:5px; } .calendar-event { padding:5px; font-size:10px; } .calendar-event strong { font-size:10px; } }
 @media(max-width:560px) { .repairs-calendar { padding:10px; overflow-x:auto; } .calendar-grid { min-width:620px; } .calendar-toolbar { min-width:620px; } .calendar-toolbar h2 { font-size:20px; } .calendar-month .calendar-cell { min-height:85px; } .calendar-page { padding-left:10px; padding-right:10px; } .my-repairs-calendar-link { justify-content:stretch; } .my-repairs-calendar-link .button { width:100%; justify-content:center; } }
+
+/* Admin – seznam uživatelů */
+.admin-users-page { min-height: 100vh; background: #f7f7f2; }
+.admin-users-header { height: 76px; padding: 0 clamp(20px, 5vw, 76px); background: #173d2e; color: #fff; display: flex; align-items: center; justify-content: space-between; }
+.admin-back-link { display: inline-flex; align-items: center; gap: 8px; font-weight: 650; }
+.admin-users-content { width: min(1120px, calc(100% - 40px)); margin: 0 auto; padding: 54px 0 80px; }
+.admin-users-heading { display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-bottom: 30px; }
+.admin-users-heading h1 { margin: 9px 0; color: #20372b; font-size: clamp(34px, 4vw, 46px); }
+.admin-users-heading p { margin: 0; color: #718075; }
+.admin-users-total { display: flex; align-items: center; gap: 9px; padding: 15px 19px; border: 1px solid #e4e8dc; border-radius: 14px; background: #fff; color: #54715a; }
+.admin-users-total strong { color: #20372b; font-size: 22px; }
+.admin-users-search { display: flex; align-items: center; gap: 12px; max-width: 560px; padding: 13px 16px; border: 1px solid #e0e5dc; border-radius: 11px; background: #fff; color: #718075; margin-bottom: 22px; }
+.admin-users-search input { width: 100%; border: 0; outline: 0; background: transparent; color: #20372b; }
+.admin-users-table-wrap { overflow: hidden; border: 1px solid #e4e8df; border-radius: 15px; background: #fff; }
+.admin-users-table { width: 100%; border-collapse: collapse; text-align: left; }
+.admin-users-table th { padding: 15px 20px; background: #edf1e7; color: #607264; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+.admin-users-table td { padding: 15px 20px; border-top: 1px solid #edf0e9; color: #526257; font-size: 14px; }
+.admin-user-identity { display: flex; align-items: center; gap: 12px; color: #263c30; }
+.admin-user-identity img, .admin-user-avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
+.admin-user-avatar { display: grid; place-items: center; background: #e4ebd9; color: #315b40; font-weight: 800; }
+.admin-user-role { display: inline-flex; padding: 6px 10px; border-radius: 99px; background: #eef0eb; color: #5e6b61; font-size: 12px; font-weight: 750; }
+.admin-user-role.role-admin { background: #e5ebd9; color: #315a3b; }
+.admin-user-role.role-volunteer { background: #e5eff0; color: #38656a; }
+.admin-user-id { font-variant-numeric: tabular-nums; }
+.admin-users-result-count { padding: 13px 20px; border-top: 1px solid #edf0e9; color: #849087; font-size: 12px; }
+.admin-users-state, .admin-users-empty, .admin-users-error { padding: 48px 24px; border: 1px solid #e4e8df; border-radius: 15px; background: #fff; text-align: center; color: #718075; }
+.admin-users-empty h2 { margin: 12px 0 6px; color: #294333; font-size: 20px; }
+.admin-users-empty p, .admin-users-error p { margin: 0 0 16px; }
+@media (max-width: 680px) { .admin-users-heading { align-items: flex-start; flex-direction: column; } .admin-users-table-wrap { overflow-x: auto; } .admin-users-table { min-width: 650px; } .admin-users-header .brand { font-size: 19px; } }

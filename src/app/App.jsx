@@ -7,6 +7,7 @@ import RequestInterestsPage from '../pages/RequestInterestsPage.jsx';
 import MyRepairsPage from '../pages/MyRepairsPage.jsx';
 import RepairsCalendarPage from '../pages/RepairsCalendarPage.jsx';
 import LoginPage from '../pages/LoginPage.jsx';
+import AdminUsersPage from '../pages/AdminUsersPage.jsx';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
       <Route path="/my-repairs" element={<MyRepairsPage />} />
       <Route path="/my-repairs/calendar" element={<RepairsCalendarPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/admin/users" element={<AdminUsersPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

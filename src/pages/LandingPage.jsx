@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Coffee, Wrench, Users, Recycle } from 'lucide-react';
+import { useAuth } from '../auth/AuthContext.jsx';
 import hero from '../assets/landing-hero-photo.png';
 import radio from '../assets/landing-radio.jpg';
 import volunteer from '../assets/landing-volunteer.jpg';
@@ -7,6 +8,7 @@ import workflow from '../assets/landing-workflow.jpg';
 import bottom from '../assets/landing-bottom.jpg';
 
 export default function LandingPage() {
+  const { session } = useAuth();
   return (
     <div className="landing landing-refreshed">
       <header className="landing-header">
@@ -19,7 +21,8 @@ export default function LandingPage() {
           <a href="#how">Jak to funguje</a>
           <Link to="/requests">Prohlédnout opravy</Link>
           <Link to="/requests/new">Potřebuji opravu</Link>
-          <Link className="button button-light" to="/login">Přihlásit se</Link>
+          {session?.user?.role === 'admin' && <Link to="/admin/users">Správa uživatelů</Link>}
+          <Link className="button button-light" to="/login">{session ? session.user?.name || 'Můj účet' : 'Přihlásit se'}</Link>
         </nav>
       </header>
 

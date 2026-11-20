@@ -1493,3 +1493,218 @@ select {
     min-height: 300px;
   }
 }
+
+
+/* S09 – přehled zájemců o požadavek */
+.owner-interest-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 20px;
+  margin: 22px 0;
+  border: 1px solid #e2e7dc;
+  border-radius: 12px;
+  background: #f8faf5;
+}
+.owner-interest-link strong {
+  color: #294a34;
+  font-size: 14px;
+}
+.owner-interest-link p {
+  color: #778277;
+  font-size: 13px;
+  margin: 5px 0 0;
+  line-height: 1.45;
+}
+.interests-content {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 35px 22px 65px;
+}
+.interests-heading {
+  margin: 18px 0 26px;
+}
+.interests-heading h1 {
+  font-size: clamp(32px, 4vw, 42px);
+  margin: 10px 0 8px;
+}
+.interests-heading p {
+  color: #6f7d72;
+  line-height: 1.55;
+  margin: 0;
+}
+.interests-summary {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #e9eddf;
+  color: #34513a;
+  border-radius: 13px;
+  padding: 16px 20px;
+  margin-bottom: 18px;
+}
+.interests-summary > div {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+}
+.interests-summary strong {
+  font-size: 25px;
+}
+.interests-summary span {
+  color: #687968;
+  font-size: 13px;
+}
+.interest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.interest-card {
+  display: flex;
+  gap: 16px;
+  padding: 22px;
+  background: #fff;
+  border: 1px solid #e5e5dc;
+  border-radius: 14px;
+  box-shadow: 0 4px 18px #20372b06;
+}
+.interest-avatar {
+  width: 46px;
+  height: 46px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: #557253;
+  background: #edf0e6;
+  border-radius: 50%;
+}
+.interest-card-main {
+  flex: 1;
+  min-width: 0;
+}
+.interest-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.interest-card-top h2 {
+  margin: 2px 0;
+  font-size: 18px;
+  color: #243d2d;
+}
+.repair-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #60795b;
+  background: #f0f4eb;
+  border-radius: 99px;
+  padding: 6px 10px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.interest-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 16px 0;
+  color: #657467;
+}
+.interest-message svg {
+  flex: none;
+  margin-top: 2px;
+  color: #879780;
+}
+.interest-message p {
+  margin: 0;
+  line-height: 1.55;
+  font-size: 14px;
+  white-space: pre-wrap;
+}
+.interest-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 13px;
+  border-top: 1px solid #edf0e9;
+}
+.interest-card-footer > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #829083;
+  font-size: 12px;
+}
+.interests-state,
+.interests-empty,
+.interests-message {
+  background: #fff;
+  border: 1px solid #e5e5dc;
+  border-radius: 14px;
+  padding: 38px 24px;
+  text-align: center;
+  color: #68766b;
+}
+.interests-empty svg {
+  color: #829778;
+}
+.interests-empty h2 {
+  color: #294a34;
+  margin: 12px 0 7px;
+  font-size: 20px;
+}
+.interests-empty p {
+  margin: 0 auto;
+  max-width: 520px;
+  line-height: 1.55;
+  font-size: 14px;
+}
+.interests-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  text-align: left;
+  padding: 20px;
+}
+.interests-message svg {
+  flex: none;
+}
+.interests-message-error {
+  color: #8f4038;
+  background: #fffafa;
+  border-color: #ead7d3;
+}
+.interests-message p {
+  line-height: 1.5;
+  margin: 6px 0 14px;
+}
+@media (max-width: 760px) {
+  .interests-content {
+    padding: 28px 15px 48px;
+  }
+  .owner-interest-link {
+    align-items: stretch;
+    flex-direction: column;
+  }
+  .owner-interest-link .button {
+    width: 100%;
+  }
+  .interest-card {
+    padding: 16px;
+    gap: 11px;
+  }
+  .interest-avatar {
+    width: 38px;
+    height: 38px;
+  }
+  .interest-card-top {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

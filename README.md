@@ -64,3 +64,17 @@ Frontend volá:
 - očekávané úspěšné HTTP 2xx; `409 Conflict` se interpretuje jako již existující zájem; `401/403` zobrazí odpovídající chybu.
 
 **Důležité napojení na backend:** V dodaném frontendovém repozitáři není implementace tohoto API endpointu ani API kontrakt. Backend musí endpoint doplnit a ověřit, že přihlášený uživatel má roli `VOLUNTEER`, požadavek je otevřený a daný dobrovolník již zájem neposlal. Ochrana proti duplicitě musí být vynucena také na serveru; samotný frontend ji nemůže garantovat po obnovení stránky.
+
+
+## Frontend – S09: přehled zájemců o požadavek
+
+Byla doplněna stránka `/requests/:id/interests`, která načítá zájemce přes API:
+
+- `GET /requests/:id/interests`
+- hlavička `Authorization: Bearer <token>`
+- odpověď může být přímo pole zájemců nebo objekt `{ "interests": [...] }`
+- položka může obsahovat `id`/`_id`, `message` (případně `note`), jméno dobrovolníka v `volunteer.name`, `user.name`, `name` nebo `volunteerName` a počet oprav v `successfulRepairs`, `completedRepairs` nebo vnořeném profilu.
+
+Backend musí u tohoto endpointu ověřit, že přihlášený uživatel je zadavatelem požadavku. Frontend zpracovává odpovědi 401, 403 a 404; samotné oprávnění nikdy nepovažuje za zajištěné pouze skrytím odkazu.
+
+Poznámka: endpoint je integrační kontrakt pro backend. V dodaném frontendovém archivu nebyla implementace tohoto GET endpointu doložena, proto je nutné ověřit jeho existenci nebo jej doplnit na backendu.

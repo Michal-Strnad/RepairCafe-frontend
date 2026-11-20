@@ -142,6 +142,18 @@ export default function RequestDetailPage() {
               <strong>{request.category}</strong>
             </div>
           </div>
+          {session && (
+            <div className="owner-interest-link">
+              <div>
+                <strong>Jste zadavatelem tohoto požadavku?</strong>
+                <p>Otevřete přehled dobrovolníků, kteří nabídli pomoc.</p>
+              </div>
+              <Link className="button button-secondary" to={`/requests/${id}/interests`}>
+                Zobrazit zájemce
+              </Link>
+            </div>
+          )}
+
           <div className="contact-protection">
             <LockKeyhole size={20} />
             <div>

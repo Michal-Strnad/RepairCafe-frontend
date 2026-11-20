@@ -3,6 +3,7 @@
 Doplněna stránka `/my-repairs/calendar` podle návrhu kalendáře Repair Café.
 
 ## Funkce
+
 - Měsíční, týdenní a denní zobrazení.
 - Navigace na předchozí/následující období a tlačítko Dnes.
 - Zvýraznění aktuálního dne.
@@ -13,6 +14,7 @@ Doplněna stránka `/my-repairs/calendar` podle návrhu kalendáře Repair Café
 - Odkaz do kalendáře je také na stránce `/my-repairs`.
 
 ## Backendový kontrakt
+
 Kalendář používá stejný endpoint jako S11:
 
 `GET /volunteer/repairs`

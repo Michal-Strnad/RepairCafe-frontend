@@ -18,7 +18,9 @@ import { useAuth } from '../auth/AuthContext.jsx';
 const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/$/, '');
 
 function getVolunteerName(item) {
-  return item.volunteer?.name || item.user?.name || item.name || item.volunteerName || 'Dobrovolník';
+  return (
+    item.volunteer?.name || item.user?.name || item.name || item.volunteerName || 'Dobrovolník'
+  );
 }
 
 function getCompletedRepairs(item) {
@@ -55,13 +57,10 @@ export default function RequestInterestsPage() {
       setLoading(true);
       setError('');
       try {
-        const response = await fetch(
-          `${API_URL}/requests/${encodeURIComponent(id)}/interests`,
-          {
-            headers: { Authorization: `Bearer ${session.token}` },
-            signal: controller.signal,
-          },
-        );
+        const response = await fetch(`${API_URL}/requests/${encodeURIComponent(id)}/interests`, {
+          headers: { Authorization: `Bearer ${session.token}` },
+          signal: controller.signal,
+        });
         const data = await response.json().catch(() => ({}));
 
         if (response.status === 401) {
@@ -79,7 +78,11 @@ export default function RequestInterestsPage() {
 
         const rows = Array.isArray(data) ? data : data.interests;
         if (!Array.isArray(data)) {
-          const selected = data.selectedVolunteer || data.request?.selectedVolunteer || data.selectedInterest || null;
+          const selected =
+            data.selectedVolunteer ||
+            data.request?.selectedVolunteer ||
+            data.selectedInterest ||
+            null;
           setSelectedVolunteer(selected);
         }
         if (!Array.isArray(rows)) {
@@ -110,19 +113,26 @@ export default function RequestInterestsPage() {
     setSelecting(true);
     setSelectionError('');
     try {
-      const response = await fetch(`${API_URL}/requests/${encodeURIComponent(id)}/select-volunteer`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session.token}`,
+      const response = await fetch(
+        `${API_URL}/requests/${encodeURIComponent(id)}/select-volunteer`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session.token}`,
+          },
+          body: JSON.stringify({ interestId }),
         },
-        body: JSON.stringify({ interestId }),
-      });
+      );
       const data = await response.json().catch(() => ({}));
-      if (response.status === 401) throw new Error('Přihlášení vypršelo. Přihlaste se prosím znovu.');
-      if (response.status === 403) throw new Error('Dobrovolníka může vybrat pouze zadavatel požadavku.');
-      if (response.status === 409) throw new Error(data.message || 'K tomuto požadavku již byl dobrovolník vybrán.');
-      if (response.status === 404) throw new Error('Zájemce nebo požadavek již neexistuje. Obnovte prosím stránku.');
+      if (response.status === 401)
+        throw new Error('Přihlášení vypršelo. Přihlaste se prosím znovu.');
+      if (response.status === 403)
+        throw new Error('Dobrovolníka může vybrat pouze zadavatel požadavku.');
+      if (response.status === 409)
+        throw new Error(data.message || 'K tomuto požadavku již byl dobrovolník vybrán.');
+      if (response.status === 404)
+        throw new Error('Zájemce nebo požadavek již neexistuje. Obnovte prosím stránku.');
       if (!response.ok) throw new Error(data.message || 'Dobrovolníka se nepodařilo vybrat.');
 
       const chosen = data.selectedVolunteer || data.volunteer || selectionTarget;
@@ -140,7 +150,9 @@ export default function RequestInterestsPage() {
     return (
       <main className="interests-state">
         <h1>Požadavek nebyl nalezen</h1>
-        <Link className="button button-primary" to="/requests">Zpět na požadavky</Link>
+        <Link className="button button-primary" to="/requests">
+          Zpět na požadavky
+        </Link>
       </main>
     );
   }
@@ -149,7 +161,9 @@ export default function RequestInterestsPage() {
     <div className="browse-page">
       <header className="browse-header">
         <Link className="brand" to="/">
-          <span className="brand-mark"><Coffee /></span>
+          <span className="brand-mark">
+            <Coffee />
+          </span>
           <b>Repair Café</b>
         </Link>
         <nav>
@@ -171,10 +185,15 @@ export default function RequestInterestsPage() {
 
         {selectedVolunteer && (
           <section className="selected-volunteer-banner" role="status" aria-live="polite">
-            <span className="selected-volunteer-icon"><Check size={20} /></span>
+            <span className="selected-volunteer-icon">
+              <Check size={20} />
+            </span>
             <div>
               <strong>Dobrovolník byl vybrán</strong>
-              <p>{getVolunteerName(selectedVolunteer)} bude s vámi domlouvat termín opravy. Kontaktní údaje a další postup se řídí stavem požadavku.</p>
+              <p>
+                {getVolunteerName(selectedVolunteer)} bude s vámi domlouvat termín opravy. Kontaktní
+                údaje a další postup se řídí stavem požadavku.
+              </p>
             </div>
           </section>
         )}
@@ -183,12 +202,20 @@ export default function RequestInterestsPage() {
           <Users size={22} />
           <div>
             <strong>{loading ? '…' : interests.length}</strong>
-            <span>{interests.length === 1 ? 'zájemce' : interests.length >= 2 && interests.length <= 4 ? 'zájemci' : 'zájemců'}</span>
+            <span>
+              {interests.length === 1
+                ? 'zájemce'
+                : interests.length >= 2 && interests.length <= 4
+                  ? 'zájemci'
+                  : 'zájemců'}
+            </span>
           </div>
         </section>
 
         {loading ? (
-          <div className="interests-state" role="status">Načítám zájemce…</div>
+          <div className="interests-state" role="status">
+            Načítám zájemce…
+          </div>
         ) : error ? (
           <div className="interests-message interests-message-error" role="alert">
             <AlertCircle size={20} />
@@ -196,7 +223,11 @@ export default function RequestInterestsPage() {
               <strong>Zájemce se nepodařilo zobrazit</strong>
               <p>{error}</p>
               {error.includes('přihlásit') && (
-                <Link className="button button-primary" to="/login" state={{ from: `/requests/${id}/interests` }}>
+                <Link
+                  className="button button-primary"
+                  to="/login"
+                  state={{ from: `/requests/${id}/interests` }}
+                >
                   Přihlásit se
                 </Link>
               )}
@@ -206,7 +237,9 @@ export default function RequestInterestsPage() {
           <div className="interests-empty">
             <Users size={34} />
             <h2>Zatím nikdo neprojevil zájem</h2>
-            <p>Jakmile se přihlásí dobrovolník, zobrazí se zde jeho zpráva a profilové informace.</p>
+            <p>
+              Jakmile se přihlásí dobrovolník, zobrazí se zde jeho zpráva a profilové informace.
+            </p>
           </div>
         ) : (
           <div className="interest-list">
@@ -215,14 +248,24 @@ export default function RequestInterestsPage() {
               const completedRepairs = getCompletedRepairs(item);
               const message = item.message || item.note || '';
               return (
-                <article className="interest-card" key={item.id || item._id || item.userId || index}>
-                  <div className="interest-avatar"><UserRound size={23} /></div>
+                <article
+                  className="interest-card"
+                  key={item.id || item._id || item.userId || index}
+                >
+                  <div className="interest-avatar">
+                    <UserRound size={23} />
+                  </div>
                   <div className="interest-card-main">
                     <div className="interest-card-top">
                       <h2>{volunteerName}</h2>
                       {completedRepairs !== null && (
                         <span className="repair-count">
-                          <CheckCircle2 size={15} /> {completedRepairs} {completedRepairs === 1 ? 'úspěšná oprava' : completedRepairs >= 2 && completedRepairs <= 4 ? 'úspěšné opravy' : 'úspěšných oprav'}
+                          <CheckCircle2 size={15} /> {completedRepairs}{' '}
+                          {completedRepairs === 1
+                            ? 'úspěšná oprava'
+                            : completedRepairs >= 2 && completedRepairs <= 4
+                              ? 'úspěšné opravy'
+                              : 'úspěšných oprav'}
                         </span>
                       )}
                     </div>
@@ -231,16 +274,32 @@ export default function RequestInterestsPage() {
                       <p>{message || 'Dobrovolník nepřipojil žádnou zprávu.'}</p>
                     </div>
                     <div className="interest-card-footer">
-                      <span><Wrench size={15} /> Zájem o tento požadavek</span>
+                      <span>
+                        <Wrench size={15} /> Zájem o tento požadavek
+                      </span>
                       {selectedVolunteer ? (
-                        <span className="status status-selected">{(selectedVolunteer.id || selectedVolunteer._id || selectedVolunteer.interestId) === (item.id || item._id || item.interestId) ? 'Vybraný dobrovolník' : 'Výběr dokončen'}</span>
+                        <span className="status status-selected">
+                          {(selectedVolunteer.id ||
+                            selectedVolunteer._id ||
+                            selectedVolunteer.interestId) ===
+                          (item.id || item._id || item.interestId)
+                            ? 'Vybraný dobrovolník'
+                            : 'Výběr dokončen'}
+                        </span>
                       ) : (
                         <span className="status status-open">Čeká na vaše rozhodnutí</span>
                       )}
                     </div>
                     {!selectedVolunteer && (
                       <div className="interest-select-row">
-                        <button className="button button-primary" type="button" onClick={() => { setSelectionTarget(item); setSelectionError(''); }}>
+                        <button
+                          className="button button-primary"
+                          type="button"
+                          onClick={() => {
+                            setSelectionTarget(item);
+                            setSelectionError('');
+                          }}
+                        >
                           <Check size={16} /> Vybrat dobrovolníka
                         </button>
                       </div>
@@ -253,17 +312,60 @@ export default function RequestInterestsPage() {
         )}
 
         {selectionTarget && (
-          <div className="selection-dialog-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget && !selecting) setSelectionTarget(null); }}>
-            <section className="selection-dialog" role="dialog" aria-modal="true" aria-labelledby="selection-dialog-title">
-              <button className="selection-dialog-close" type="button" aria-label="Zavřít" onClick={() => setSelectionTarget(null)} disabled={selecting}><X size={19} /></button>
+          <div
+            className="selection-dialog-backdrop"
+            role="presentation"
+            onMouseDown={(event) => {
+              if (event.target === event.currentTarget && !selecting) setSelectionTarget(null);
+            }}
+          >
+            <section
+              className="selection-dialog"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="selection-dialog-title"
+            >
+              <button
+                className="selection-dialog-close"
+                type="button"
+                aria-label="Zavřít"
+                onClick={() => setSelectionTarget(null)}
+                disabled={selecting}
+              >
+                <X size={19} />
+              </button>
               <span className="eyebrow">POTVRZENÍ VÝBĚRU</span>
               <h2 id="selection-dialog-title">Vybrat dobrovolníka?</h2>
-              <p>Opravdu chcete pro požadavek „{request.title}“ vybrat dobrovolníka <strong>{getVolunteerName(selectionTarget)}</strong>?</p>
-              <p className="selection-dialog-hint">Po potvrzení bude výběr uložen a budete moci domluvit termín opravy.</p>
-              {selectionError && <div className="interest-error" role="alert"><AlertCircle size={18} /><span>{selectionError}</span></div>}
+              <p>
+                Opravdu chcete pro požadavek „{request.title}“ vybrat dobrovolníka{' '}
+                <strong>{getVolunteerName(selectionTarget)}</strong>?
+              </p>
+              <p className="selection-dialog-hint">
+                Po potvrzení bude výběr uložen a budete moci domluvit termín opravy.
+              </p>
+              {selectionError && (
+                <div className="interest-error" role="alert">
+                  <AlertCircle size={18} />
+                  <span>{selectionError}</span>
+                </div>
+              )}
               <div className="interest-actions">
-                <button className="button button-secondary" type="button" onClick={() => setSelectionTarget(null)} disabled={selecting}>Zrušit</button>
-                <button className="button button-primary" type="button" onClick={confirmVolunteerSelection} disabled={selecting}>{selecting ? 'Ukládám…' : 'Potvrdit výběr'}</button>
+                <button
+                  className="button button-secondary"
+                  type="button"
+                  onClick={() => setSelectionTarget(null)}
+                  disabled={selecting}
+                >
+                  Zrušit
+                </button>
+                <button
+                  className="button button-primary"
+                  type="button"
+                  onClick={confirmVolunteerSelection}
+                  disabled={selecting}
+                >
+                  {selecting ? 'Ukládám…' : 'Potvrdit výběr'}
+                </button>
               </div>
             </section>
           </div>

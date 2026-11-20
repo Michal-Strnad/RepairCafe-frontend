@@ -20,11 +20,11 @@ import lampPhoto from '../assets/lamp.jpg';
 import bagPhoto from '../assets/toaster.jpg';
 
 const requestPhotos = {
-  '1': radioPhoto,
-  '2': chairPhoto,
-  '3': bikePhoto,
-  '4': bagPhoto,
-  '5': lampPhoto,
+  1: radioPhoto,
+  2: chairPhoto,
+  3: bikePhoto,
+  4: bagPhoto,
+  5: lampPhoto,
 };
 const icons = { plug: Plug, armchair: Armchair, bike: Bike, shirt: Shirt, lightbulb: Lightbulb };
 const categories = ['Všechny kategorie', ...new Set(sampleRequests.map((item) => item.category))];

@@ -65,7 +65,6 @@ Frontend volá:
 
 **Důležité napojení na backend:** V dodaném frontendovém repozitáři není implementace tohoto API endpointu ani API kontrakt. Backend musí endpoint doplnit a ověřit, že přihlášený uživatel má roli `VOLUNTEER`, požadavek je otevřený a daný dobrovolník již zájem neposlal. Ochrana proti duplicitě musí být vynucena také na serveru; samotný frontend ji nemůže garantovat po obnovení stránky.
 
-
 ## Frontend – S09: přehled zájemců o požadavek
 
 Byla doplněna stránka `/requests/:id/interests`, která načítá zájemce přes API:
@@ -78,7 +77,6 @@ Byla doplněna stránka `/requests/:id/interests`, která načítá zájemce př
 Backend musí u tohoto endpointu ověřit, že přihlášený uživatel je zadavatelem požadavku. Frontend zpracovává odpovědi 401, 403 a 404; samotné oprávnění nikdy nepovažuje za zajištěné pouze skrytím odkazu.
 
 Poznámka: endpoint je integrační kontrakt pro backend. V dodaném frontendovém archivu nebyla implementace tohoto GET endpointu doložena, proto je nutné ověřit jeho existenci nebo jej doplnit na backendu.
-
 
 ## S11 – Přehled oprav dobrovolníka
 
